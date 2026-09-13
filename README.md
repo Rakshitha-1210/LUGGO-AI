@@ -9,12 +9,11 @@
 LUGGO AI is a smart luggage transportation management and tracking system designed for railway stations and bus terminals. It helps passengers transfer luggage between different platforms or bus bays when they have limited time or difficulty carrying heavy luggage.
 
 ## 🚨 Problem
-
-Passengers, especially elderly people, families, and people carrying multiple bags, may face difficulty moving luggage between distant platforms or bus bays within a limited transfer time.
-
+"The main problem is that passengers in railway stations and bus terminals often struggle to carry heavy luggage from one platform or bus bay to another. This is especially difficult when the station is crowded or when the passenger has less time to reach their train or bus".
 ## 💡 Solution
+To solve this, we introduced LUGGO AI. Through our system, passengers can book luggage transportation by selecting the source and destination. The luggage is then physically moved by our staff, while the system provides QR-based verification and tracking. Once the luggage reaches the destination, the passenger verifies it with an OTP and collects it safely.
 
-LUGGO AI provides a digital platform to book and manage luggage transfers. The physical luggage is transported by authorized luggage-handling personnel, while LUGGO manages the priority, tracking, and secure verification of the process.
+So, our main idea is simple: the passenger moves freely, while LUGGO takes care of the luggage.”
 
 ## ✨ Key Features
 
