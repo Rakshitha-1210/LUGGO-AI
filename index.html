@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LUGGO AI - Luggage Transportation</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Excel Reader -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <!-- QR Generator -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        🧳 <span>LUGGO</span><strong> AI</strong>
+    </div>
+
+    <div class="nav-links">
+        <a href="#booking">Book</a>
+        <a href="#tracking">Track</a>
+        <a href="#how-it-works">How It Works</a>
+    </div>
+
+</nav>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <span class="hero-tag">AI-POWERED LUGGAGE TRANSPORT</span>
+
+        <h1>
+            Your Luggage Moves.<br>
+            <span>You Move Freely.</span>
+        </h1>
+
+        <p>
+            Move your luggage easily between platforms and terminals
+            with smart booking, priority management and secure tracking.
+        </p>
+
+        <a href="#booking" class="hero-btn">
+            Book Luggage Transfer →
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- ================= BOOKING SECTION ================= -->
+
+<section class="booking-section" id="booking">
+
+    <div class="booking-card">
+
+        <div class="section-heading">
+
+            <span>01</span>
+
+            <div>
+                <h2>Book Luggage Transfer</h2>
+                <p>Enter your travel and luggage details</p>
+            </div>
+
+        </div>
+
+
+        <!-- PASSENGER NAME -->
+
+        <div class="form-group">
+
+            <label for="passengerName">
+                Passenger Name
+            </label>
+
+            <input
+                type="text"
+                id="passengerName"
+                placeholder="Enter passenger name"
+            >
+
+        </div>
+
+
+        <!-- TRANSPORT TYPE -->
+
+        <div class="form-group">
+
+            <label>
+                Transport Type
+            </label>
+
+            <div class="transport-options">
+
+                <div
+                    class="transport-card active"
+                    id="railwayCard"
+                    onclick="selectTransport('Railway Station')"
+                >
+
+                    <div class="transport-icon">🚆</div>
+
+                    <div>
+                        <h3>Railway Station</h3>
+                        <p>Platform to Platform</p>
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="transport-card"
+                    id="busCard"
+                    onclick="selectTransport('Bus Station')"
+                >
+
+                    <div class="transport-icon">🚌</div>
+
+                    <div>
+                        <h3>Bus Station</h3>
+                        <p>Terminal to Terminal</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STATION / TERMINAL -->
+
+        <div class="form-group">
+
+            <label id="stationLabel">
+                Railway Station
+            </label>
+
+            <select id="stationSelect">
+
+                <option value="">
+                    Select Railway Station
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- PLATFORM SELECTION -->
+
+        <div class="two-column">
+
+            <div class="form-group">
+
+                <label id="currentLabel">
+                    Current Platform
+                </label>
+
+                <select id="currentSelect">
+
+                    <option value="">
+                        Select Current Platform
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label id="destinationLabel">
+                    Destination Platform
+                </label>
+
+                <select id="destinationSelect">
+
+                    <option value="">
+                        Select Destination Platform
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- BAGS + TIME -->
+
+        <div class="two-column">
+
+            <div class="form-group">
+
+                <label for="bags">
+                    Number of Bags
+                </label>
+
+                <input
+                    type="number"
+                    id="bags"
+                    min="1"
+                    max="20"
+                    value="1"
+                    placeholder="Number of bags"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="deliveryTime">
+                    Required Delivery Time
+                </label>
+
+                <select id="deliveryTime">
+
+                    <option value="">
+                        Select Required Time
+                    </option>
+
+                    <option value="5">
+                        Within 5 minutes
+                    </option>
+
+                    <option value="10">
+                        Within 10 minutes
+                    </option>
+
+                    <option value="20">
+                        Within 20 minutes
+                    </option>
+
+                    <option value="30">
+                        Within 30 minutes
+                    </option>
+
+                    <option value="45">
+                        Within 45 minutes
+                    </option>
+
+                    <option value="60">
+                        Within 1 hour
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- AI PRIORITY -->
+
+        <div class="priority-box">
+
+            <div class="priority-icon">
+                🤖
+            </div>
+
+            <div>
+
+                <h3>AI Priority</h3>
+
+                <p id="priorityText">
+                    Select required delivery time to calculate priority
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- BOOK BUTTON -->
+
+        <button
+            class="book-btn"
+            onclick="bookLuggage()"
+        >
+            Book Luggage Transfer
+        </button>
+
+
+        <div
+            id="errorMessage"
+            class="error-message"
+        ></div>
+
+
+    </div>
+
+</section>
+
+
+<!-- ================= BOOKING CONFIRMATION ================= -->
+
+<section
+    class="confirmation-section hidden"
+    id="confirmation"
+>
+
+    <div class="confirmation-card">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <h2>
+            Booking Confirmed
+        </h2>
+
+        <p>
+            Your luggage transfer request has been created successfully.
+        </p>
+
+
+        <div class="booking-details">
+
+            <div>
+                <span>Passenger</span>
+                <strong id="confirmPassenger"></strong>
+            </div>
+
+            <div>
+                <span>Booking ID</span>
+                <strong id="bookingId"></strong>
+            </div>
+
+            <div>
+                <span>Transport</span>
+                <strong id="confirmTransport"></strong>
+            </div>
+
+            <div>
+                <span>Station / Terminal</span>
+                <strong id="confirmStation"></strong>
+            </div>
+
+            <div>
+                <span>From</span>
+                <strong id="confirmFrom"></strong>
+            </div>
+
+            <div>
+                <span>To</span>
+                <strong id="confirmTo"></strong>
+            </div>
+
+            <div>
+                <span>Number of Bags</span>
+                <strong id="confirmBags"></strong>
+            </div>
+
+            <div>
+                <span>AI Priority</span>
+                <strong id="confirmPriority"></strong>
+            </div>
+
+        </div>
+
+
+        <!-- QR -->
+
+        <div class="qr-area">
+
+            <h3>Your Luggage QR</h3>
+
+            <div id="qrcode"></div>
+
+            <p>
+                Scan this QR for luggage verification.
+            </p>
+
+        </div>
+
+
+        <!-- OTP -->
+
+        <div class="otp-box">
+
+            <span>Destination OTP</span>
+
+            <strong id="otpValue">
+                ------
+            </strong>
+
+            <p>
+                Keep this OTP safe for final luggage collection.
+            </p>
+
+        </div>
+
+
+        <button
+            class="track-btn"
+            onclick="showTracking()"
+        >
+            Track My Luggage →
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= TRACKING ================= -->
+
+<section
+    class="tracking-section hidden"
+    id="tracking"
+>
+
+    <div class="tracking-card">
+
+        <div class="section-heading">
+
+            <span>02</span>
+
+            <div>
+                <h2>Luggage Tracking</h2>
+                <p>Track your luggage movement</p>
+            </div>
+
+        </div>
+
+
+        <div class="tracking-header">
+
+            <div>
+
+                <span>Booking ID</span>
+
+                <h3 id="trackingBookingId">
+                    LUGGO000000
+                </h3>
+
+            </div>
+
+            <div class="status-badge" id="currentStatus">
+                BOOKED
+            </div>
+
+        </div>
+
+
+        <!-- TRACKING TIMELINE -->
+
+        <div class="timeline">
+
+            <div class="timeline-item completed" id="step1">
+
+                <div class="timeline-circle">
+                    ✓
+                </div>
+
+                <div>
+
+                    <h3>Booked</h3>
+
+                    <p>
+                        Luggage transfer request created
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="timeline-item" id="step2">
+
+                <div class="timeline-circle">
+                    2
+                </div>
+
+                <div>
+
+                    <h3>Picked Up</h3>
+
+                    <p>
+                        Authorized handler picked up luggage
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="timeline-item" id="step3">
+
+                <div class="timeline-circle">
+                    3
+                </div>
+
+                <div>
+
+                    <h3>In Transit</h3>
+
+                    <p>
+                        Luggage is moving to destination
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="timeline-item" id="step4">
+
+                <div class="timeline-circle">
+                    4
+                </div>
+
+                <div>
+
+                    <h3>Destination Reached</h3>
+
+                    <p>
+                        Luggage reached destination
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="timeline-item" id="step5">
+
+                <div class="timeline-circle">
+                    5
+                </div>
+
+                <div>
+
+                    <h3>Delivered</h3>
+
+                    <p>
+                        Passenger collected luggage
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= DESTINATION VERIFICATION ================= -->
+
+<section
+    class="verification-section hidden"
+    id="verification"
+>
+
+    <div class="verification-card">
+
+        <div class="section-heading">
+
+            <span>03</span>
+
+            <div>
+
+                <h2>Destination Verification</h2>
+
+                <p>
+                    Verify your luggage before collection
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="verification-options">
+
+            <button
+                class="verify-option"
+                onclick="scanQR()"
+            >
+                <span>📷</span>
+                <strong>Scan QR</strong>
+                <small>Verify luggage QR</small>
+            </button>
+
+
+            <div class="otp-verification">
+
+                <label>
+                    Enter OTP
+                </label>
+
+                <input
+                    type="text"
+                    id="enteredOTP"
+                    maxlength="6"
+                    placeholder="Enter 6-digit OTP"
+                >
+
+                <button
+                    onclick="verifyOTP()"
+                    class="verify-btn"
+                >
+                    Verify OTP
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="verificationMessage"
+            class="verification-message"
+        ></div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= DELIVERED ================= -->
+
+<section
+    class="delivered-section hidden"
+    id="delivered"
+>
+
+    <div class="delivered-card">
+
+        <div class="delivered-icon">
+            ✓
+        </div>
+
+        <h2>
+            Luggage Delivered Successfully
+        </h2>
+
+        <p>
+            Your luggage has been securely verified and delivered.
+        </p>
+
+        <div class="delivered-info">
+
+            <p>
+                Passenger:
+                <strong id="deliveredPassenger"></strong>
+            </p>
+
+            <p>
+                Booking ID:
+                <strong id="deliveredBooking"></strong>
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= HOW IT WORKS ================= -->
+
+<section
+    class="how-section"
+    id="how-it-works"
+>
+
+    <div class="section-title">
+
+        <span>HOW IT WORKS</span>
+
+        <h2>
+            Simple. Smart. Secure.
+        </h2>
+
+    </div>
+
+
+    <div class="how-grid">
+
+        <div class="how-card">
+
+            <div class="how-number">
+                01
+            </div>
+
+            <div class="how-icon">
+                📝
+            </div>
+
+            <h3>
+                Book
+            </h3>
+
+            <p>
+                Enter your name, station, source and destination.
+            </p>
+
+        </div>
+
+
+        <div class="how-card">
+
+            <div class="how-number">
+                02
+            </div>
+
+            <div class="how-icon">
+                🤖
+            </div>
+
+            <h3>
+                AI Priority
+            </h3>
+
+            <p>
+                AI prioritizes luggage requests based on urgency.
+            </p>
+
+        </div>
+
+
+        <div class="how-card">
+
+            <div class="how-number">
+                03
+            </div>
+
+            <div class="how-icon">
+                🚚
+            </div>
+
+            <h3>
+                Transport
+            </h3>
+
+            <p>
+                Authorized handlers move the luggage to the destination.
+            </p>
+
+        </div>
+
+
+        <div class="how-card">
+
+            <div class="how-number">
+                04
+            </div>
+
+            <div class="how-icon">
+                🔐
+            </div>
+
+            <h3>
+                Secure Collection
+            </h3>
+
+            <p>
+                QR and OTP verification ensures secure handover.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-logo">
+        🧳 LUGGO AI
+    </div>
+
+    <p>
+        AI-Powered Luggage Transportation and Tracking System
+    </p>
+
+    <span>
+        Your Luggage Moves. You Move Freely.
+    </span>
+
+</footer>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
